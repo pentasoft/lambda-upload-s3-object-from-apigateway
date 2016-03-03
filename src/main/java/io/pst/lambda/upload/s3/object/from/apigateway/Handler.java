@@ -33,8 +33,9 @@ public class Handler implements RequestHandler<Message, String> {
     public String handleRequest(Message message, Context context) {
         final Injector injector = Guice.createInjector(buildModulesArray(message, context));
         final MessageProcessor messageProcessor = injector.getInstance(MessageProcessor.class);
-        final long processed = messageProcessor.process();
-        return processed > 0 ? "Successfully processed " + String.format("%s message", message.getName()) : "No messages to process";
+        final boolean processed = messageProcessor.process();
+        
+        return processed ? "Successfully processed " + String.format("%s message", message.getName()) : "No messages to process";
     }
 
 }
