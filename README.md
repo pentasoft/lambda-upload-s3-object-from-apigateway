@@ -22,7 +22,7 @@ Follow all steps in:
 http://docs.aws.amazon.com/lambda/latest/dg/java-create-jar-pkg-maven-and-eclipse.html
 
 
-### Run Lambda in your PCto test objects are uploaded to S3
+### Run Lambda in your PC to test objects are uploaded to S3
 
 1. Configure maven build with test goal
 
@@ -30,8 +30,7 @@ http://docs.aws.amazon.com/lambda/latest/dg/java-create-jar-pkg-maven-and-eclips
 mvn test
 ```
 
-2. Add credentials to have permission to put objects to S3.
-You must add environment variables to the maven build test created. As is explained at: http://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/?com/amazonaws/auth/EnvironmentVariableCredentialsProvider.html
+2. Add credentials to have permission to put objects to S3. You must add environment variables to the maven build test created. As is explained at: http://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/?com/amazonaws/auth/EnvironmentVariableCredentialsProvider.html
 
 ```
 AWS_ACCESS_KEY_ID
