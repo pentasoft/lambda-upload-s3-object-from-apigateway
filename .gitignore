@@ -1,0 +1,8 @@
+.project
+.settings
+.classpath
+.checkstyle
+bin
+META-INF
+build
+target
