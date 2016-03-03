@@ -10,5 +10,5 @@ package io.pst.lambda.upload.s3.object.from.apigateway.processor;
  *
  */
 public interface MessageProcessor {
-    long process();
+    boolean process();
 }
