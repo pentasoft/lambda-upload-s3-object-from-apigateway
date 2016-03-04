@@ -16,8 +16,8 @@ import com.amazonaws.services.lambda.runtime.Context;
  * @author Borja Lopez Altarriba
  *
  */
-public class HandlerTest {
-    
+public class HandlerIntegrationTest {
+
     private Handler handler;
     private Context context;
     private Message message;
@@ -28,8 +28,7 @@ public class HandlerTest {
         
         message = new Message();
         message.setId("1");
-        message.setName("testMessageName");
-       
+        message.setName("testMessageName");  
     }
     
     @Test
@@ -39,7 +38,6 @@ public class HandlerTest {
         
         String expected = "Successfully processed testMessageName message";
         
-        assertTrue("Result is not OK message",result.equals(expected));
+        assertTrue("Result [" + result + "] is not OK message",result.equals(expected));
     }
-
 }
