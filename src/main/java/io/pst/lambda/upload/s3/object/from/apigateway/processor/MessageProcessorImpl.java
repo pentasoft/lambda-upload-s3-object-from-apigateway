@@ -5,6 +5,7 @@ package io.pst.lambda.upload.s3.object.from.apigateway.processor;
 
 import io.pst.lambda.upload.s3.object.from.apigateway.cloud.CloudObjectService;
 import io.pst.lambda.upload.s3.object.from.apigateway.model.Message;
+import io.pst.lambda.upload.s3.object.from.apigateway.util.FileNameGenerator;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.google.inject.Inject;
@@ -36,8 +37,8 @@ public class MessageProcessorImpl implements MessageProcessor {
     }
 
     public boolean process() {        
-        String fileName = "fileName.json"; 
-       
+        String fileName = FileNameGenerator.newName(); 
+       System.out.println("The filename will be [" + fileName + "]");
         return cloudObjectService.putObject(this.bucket, fileName, message);
     }
 

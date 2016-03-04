@@ -11,6 +11,7 @@ import java.io.InputStream;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
@@ -40,11 +41,12 @@ public class S3CloudObjectService implements CloudObjectService {
           metadata.setContentLength(messageBuffer.length);
           
           PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, key, inputStream, metadata);
-          s3.putObject(putObjectRequest);
+          PutObjectResult putObjectResult = s3.putObject(putObjectRequest);
+          
           return true;
       }
       catch(Exception e){
-          System.out.println("Erroraco" + e.getMessage());
+          System.out.println("Error " + e.getMessage());
           return false;
       }
     }
