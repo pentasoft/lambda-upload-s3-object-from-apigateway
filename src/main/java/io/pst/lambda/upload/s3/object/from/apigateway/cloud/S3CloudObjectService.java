@@ -3,6 +3,7 @@
  */
 package io.pst.lambda.upload.s3.object.from.apigateway.cloud;
 
+import io.pst.lambda.upload.s3.object.from.apigateway.exception.CustomException;
 import io.pst.lambda.upload.s3.object.from.apigateway.model.Message;
 
 import java.io.ByteArrayInputStream;
@@ -11,7 +12,6 @@ import java.io.InputStream;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
@@ -41,13 +41,13 @@ public class S3CloudObjectService implements CloudObjectService {
           metadata.setContentLength(messageBuffer.length);
           
           PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, key, inputStream, metadata);
-          PutObjectResult putObjectResult = s3.putObject(putObjectRequest);
-          
+          s3.putObject(putObjectRequest);
+          System.out.println("Todo correcto");
           return true;
       }
-      catch(Exception e){
-          System.out.println("Error " + e.getMessage());
-          return false;
+      catch(final Exception e){
+          System.out.println("Cascó");
+          throw new CustomException("Exception thrown uploading object with key " + key + " to S3 bucket " + bucket , e);
       }
     }
 }
