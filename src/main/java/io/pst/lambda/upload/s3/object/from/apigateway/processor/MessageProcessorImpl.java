@@ -38,7 +38,6 @@ public class MessageProcessorImpl implements MessageProcessor {
 
     public boolean process() {        
         String fileName = FileNameGenerator.newName(); 
-       System.out.println("The filename will be [" + fileName + "]");
         return cloudObjectService.putObject(this.bucket, fileName, message);
     }
 

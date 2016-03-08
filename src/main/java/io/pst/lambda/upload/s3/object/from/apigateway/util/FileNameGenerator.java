@@ -28,6 +28,6 @@ public final class FileNameGenerator {
       
         return generateNewNameFromDate(date);
     }
-         
+    
     private static Random random = new Random();
 }
