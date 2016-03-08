@@ -37,5 +37,4 @@ public class Handler implements RequestHandler<Message, String> {
         
         return processed ? "Successfully processed " + String.format("%s message", message.getName()) : "No messages to process";
     }
-
 }

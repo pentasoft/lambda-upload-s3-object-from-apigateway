@@ -27,36 +27,28 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class S3CloudObjectServiceTest {
     
-    private class CustomJsonProcesingException extends JsonProcessingException {
+    private class CustomJsonProcessingException extends JsonProcessingException {
 
         private static final long serialVersionUID = 1L;
 
-        CustomJsonProcesingException(String msg) {
+        CustomJsonProcessingException(String msg) {
             super(msg);
         }
     }
     
+    private String bucket;
+    private String key;
     private CloudObjectService cloudObjectService;
     private AmazonS3 s3;
     private ObjectMapper mapper;
     private Message message;
-            
-    private void configureMapperMockingBehaviourWithJsonProcessingError(Message message) throws JsonProcessingException {
-//        try {
-            when(mapper.writeValueAsBytes(message)).thenThrow(new CustomJsonProcesingException("Serialize exception"));
-//        } catch (JsonProcessingException e) {
-//            System.out.println("Exception configuring mapper behavior");
-//        }
-    }
-    
-    private void configureS3MockingBehaviourWithAmazonError() {
-        when(s3.putObject(any(PutObjectRequest.class))).thenThrow(new AmazonClientException("Amazon exception"));
-    }
     
     @Before
     public void setUp() {
-        s3 = mock(AmazonS3.class);
+        bucket = "draft-bucket";
+        key = "draft-file.json";
         
+        s3 = mock(AmazonS3.class);
         
         message = new Message();
         message.setId("id-test");
@@ -65,9 +57,6 @@ public class S3CloudObjectServiceTest {
     
     @Test
     public void test_PutObject_WhenMessageIsNull_ReturnTrue(){
-        final String bucket = "draft-bucket";
-        final String key = "draft-file.json";
-        
         mapper = new ObjectMapper();
         cloudObjectService = new S3CloudObjectService(s3, mapper);
         message = null;
@@ -77,38 +66,41 @@ public class S3CloudObjectServiceTest {
         assertTrue("Everything works.", result);
     }
     
-    @Test(expected = CustomException.class)
+    @Test
     public void test_PutObject_WhenMockingAmazonErrorException_ReturnAmazonErrorThrowsException() {
-        final String bucket = "draft-bucket";
-        final String key = "draft-file.json";
-        
+        boolean testResult = false;
         mapper = new ObjectMapper();
         cloudObjectService = new S3CloudObjectService(s3, mapper);
-        configureS3MockingBehaviourWithAmazonError();
+        when(s3.putObject(any(PutObjectRequest.class))).thenThrow(new AmazonClientException("Amazon exception"));
 
-        cloudObjectService.putObject(bucket, key, message);
+        try{
+            cloudObjectService.putObject(bucket, key, message);
+        }
+        catch(CustomException e){
+            if (e.getCause().getClass().getName().equals(AmazonClientException.class.getName())){ 
+                testResult = true;
+            }
+        }
+        assertTrue("Expected exception not thrown",testResult);        
     }
     
     @Test
     public void test_PutObject_WhenSerializationFails_ReturnJsonProcesingException(){
-        final String bucket = "draft-bucket";
-        final String key = "draft-file.json";
-
+        boolean testResult = false;
         try{
             mapper = mock(ObjectMapper.class);
-            when(mapper.writeValueAsBytes(message)).thenThrow(new CustomJsonProcesingException("Serialize exception"));
+            when(mapper.writeValueAsBytes(message)).thenThrow(new CustomJsonProcessingException("Serialize exception"));
             cloudObjectService = new S3CloudObjectService(s3, mapper);
             
             cloudObjectService.putObject(bucket, key, message);
         }
         catch (CustomException e) {
-            if (e.getStackTrace().getClass().getName().equals("JsonProcessingException")){
-                assertTrue(true);
+            if (e.getCause().getClass().getName().equals(CustomJsonProcessingException.class.getName())){                
+                testResult = true;
             }
         } 
         catch (JsonProcessingException e) {
-            System.out.println("Error during mocking mapper");
-            assertTrue(false);
         }
+        assertTrue("Expected exception not thrown",testResult);
     }
 }
