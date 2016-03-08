@@ -17,12 +17,7 @@ import org.junit.Test;
 public class FileNameGeneratorTest {
     
     @Test
-    public void testFileNameLengthIs31(){
-        assertEquals("Length is different than 31", 31, FileNameGenerator.newName().length());
-    }
-    
-    @Test
-    public void testFileNameMatchesNamePattern(){
+    public void test_GenerateNewNameFromDate_WhenExecute_ReturnFileNameWhichMatchesNamePattern(){
         DateTime date = new DateTime(2015, 8, 13,10,30,45);
         String fileName = FileNameGenerator.generateNewNameFromDate(date);
      
@@ -30,11 +25,16 @@ public class FileNameGeneratorTest {
     }
     
     @Test
-    public void testFileNameStartsWithDate(){
+    public void test_GenerateNewNameFromDate_WhenExecute_ReturnFileNameWhichStartsWithDate(){
         DateTime date = new DateTime(2015, 8, 13,10,30,45);
         String fileName = FileNameGenerator.generateNewNameFromDate(date);
      
         assertEquals("File name doesn´t start with correct date", "20150813103045",  fileName.substring(0, 14));
+    }
+    
+    @Test
+    public void test_NewName_WhenExecute_ReturnFileNameWithLength31(){
+        assertEquals("Length is different than 31", 31, FileNameGenerator.newName().length());
     }
 }
 
