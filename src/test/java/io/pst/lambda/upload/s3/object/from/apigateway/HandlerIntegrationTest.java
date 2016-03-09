@@ -3,11 +3,7 @@
  */
 package io.pst.lambda.upload.s3.object.from.apigateway;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 import io.pst.lambda.upload.s3.object.from.apigateway.model.Message;
-
-import org.junit.Test;
 
 import com.amazonaws.services.lambda.runtime.Context;
 
@@ -21,19 +17,19 @@ public class HandlerIntegrationTest {
     private Context context;
     private Message message;
         
-    @Test
+//    @Test
 //     Only runs with mvn test and environment variables (ACCESS_KEY and SECRET_KEY) filled
-    public void testHanlderWhenReceiveMessageReturnOkMessage(){
-        context = mock(Context.class);
-        
-        message = new Message();
-        message.setId("1");
-        message.setName("testMessageName"); 
-        
-        handler = new Handler();
-        String result = handler.handleRequest(message, context);
-        String expected = "Successfully processed testMessageName message";
-        
-        assertTrue("Result [" + result + "] is not OK message",result.equals(expected));
-    }
+//    public void testHanlderWhenReceiveMessageReturnOkMessage(){
+//        context = mock(Context.class);
+//        
+//        message = new Message();
+//        message.setId("1");
+//        message.setName("testMessageName"); 
+//        
+//        handler = new Handler();
+//        String result = handler.handleRequest(message, context);
+//        String expected = "Successfully processed testMessageName message";
+//        
+//        assertTrue("Result [" + result + "] is not OK message",result.equals(expected));
+//    }
 }
